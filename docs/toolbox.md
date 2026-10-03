@@ -19,7 +19,13 @@ Open the project in Android Studio with Android SDK 37 and JDK 17 or newer. Alte
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-The application ID is `dev.siva.toolbox`. The current version is 0.2.1. The Gradle wrapper is included. Local SDK paths, build outputs, APKs, IDE files, caches, and signing keys are excluded from Git.
+The application ID is `dev.siva.toolbox`. The current version is 0.3.0. The Gradle wrapper is included. Local SDK paths, build outputs, APKs, IDE files, caches, and signing keys are excluded from Git.
+
+## Tap timing
+
+Use **Time between taps** to set the maximum interval from 150 to 700 milliseconds in 10-millisecond steps. The default is 300 milliseconds. The setting is saved on the device and applies immediately to both home and lock screens. Changing it clears any pending tap pair.
+
+Lower values require faster taps; higher values accommodate slower taps but increase the chance of recognizing unrelated touches. The separate 160-millisecond settling delay remains fixed.
 
 ## How it works
 
@@ -27,7 +33,7 @@ The application ID is `dev.siva.toolbox`. The current version is 0.2.1. The Grad
 
 On supported screens, the service attaches an invisible 1 × 1 pixel accessibility window with `FLAG_NOT_FOCUSABLE`, `FLAG_NOT_TOUCH_MODAL`, and `FLAG_WATCH_OUTSIDE_TOUCH`. Android delivers `ACTION_OUTSIDE` notifications when touches begin outside that pixel while sending the actual touches to the underlying screen. There is no visible gesture area or touch replay.
 
-Two touch starts separated by at least 40 milliseconds and no more than Android's double-tap timeout schedule a lock after a 160-millisecond settling period. Accessibility click and scroll events cancel pending detection. The service checks screen eligibility again before calling `performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)`. Device Admin permission is not required.
+Two touch starts separated by at least 40 milliseconds and no more than the configured maximum interval schedule a lock after a 160-millisecond settling period. Accessibility click and scroll events cancel pending detection. The service checks screen eligibility again before calling `performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)`. Device Admin permission is not required.
 
 ### Screen detection
 

@@ -47,7 +47,9 @@ class SleepService : AccessibilityService(), android.content.SharedPreferences.O
   updateArea()
  }
  private fun cancelPair() { firstDown=0L; handler.removeCallbacks(lockAfterQuiet) }
- override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) { updateArea(true) }
+ override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+  if (key == TapTiming.KEY) cancelPair() else updateArea(true)
+ }
  override fun onInterrupt() { removeArea() }
  private fun isHome(): Boolean {
   val root=rootInActiveWindow ?: return false
@@ -107,7 +109,7 @@ class SleepService : AccessibilityService(), android.content.SharedPreferences.O
      lastOutside=event.eventTime
      android.util.Log.d("ToolboxGesture", "outside event #$outsideCount; coordinatesAvailable=${event.x != 0f || event.y != 0f}")
      val elapsed=event.eventTime-firstDown
-     if (firstDown != 0L && elapsed in 40L..ViewConfiguration.getDoubleTapTimeout().toLong()) {
+     if (firstDown != 0L && elapsed in 40L..TapTiming.clamp(prefs.getInt(TapTiming.KEY,TapTiming.DEFAULT_MS)).toLong()) {
       firstDown=0L
       // Outside notifications contain DOWN only, not UP/MOVE. Give the
       // underlying view time to report a click/scroll before committing.

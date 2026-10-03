@@ -24,6 +24,25 @@ class MainActivity : Activity() {
   }
   toggle("Enable on home screen", "home", false)
   toggle("Enable on lock screen", "lock", false)
+  text(getString(R.string.tap_timing_title), 18f)
+  val interval=TapTiming.clamp(prefs.getInt(TapTiming.KEY,TapTiming.DEFAULT_MS))
+  val timingLabel=text(getString(R.string.tap_timing_value,interval))
+  text(getString(R.string.tap_timing_help),14f)
+  box.addView(SeekBar(this).apply {
+   max=(TapTiming.MAX_MS-TapTiming.MIN_MS)/TapTiming.STEP_MS
+   progress=(interval-TapTiming.MIN_MS)/TapTiming.STEP_MS
+   contentDescription=getString(R.string.tap_timing_value,interval)
+   setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+    override fun onProgressChanged(bar: SeekBar?, value: Int, fromUser: Boolean) {
+     val milliseconds=TapTiming.MIN_MS+value*TapTiming.STEP_MS
+     timingLabel.text=getString(R.string.tap_timing_value,milliseconds)
+     bar?.contentDescription=timingLabel.text
+     if(fromUser) prefs.edit().putInt(TapTiming.KEY,milliseconds).apply()
+    }
+    override fun onStartTrackingTouch(bar: SeekBar?) {}
+    override fun onStopTrackingTouch(bar: SeekBar?) {}
+   })
+  })
   text("Accessibility permission lets Toolbox inspect window structure to identify supported screens and lock the device when you double tap. Processing stays on this device; Toolbox has no internet permission. Android 17 Advanced Protection may block this service.")
   box.addView(Button(this).apply { text=getString(R.string.setup_accessibility); setOnClickListener {
    android.app.AlertDialog.Builder(this@MainActivity).setTitle("Enable Toolbox")

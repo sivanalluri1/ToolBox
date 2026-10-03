@@ -1,1 +1,4 @@
-<resources><string name="service_description">Toolbox detects home and lock screens to detect double taps with an invisible one-pixel touch observer. It reads window structure locally and does not collect or transmit screen content.</string><string name="setup_accessibility">Set up accessibility</string></resources>
+<resources><string name="service_description">Toolbox detects home and lock screens to detect double taps with an invisible one-pixel touch observer. It reads window structure locally and does not collect or transmit screen content.</string><string name="setup_accessibility">Set up accessibility</string><string name="tap_timing_title">Time between taps</string>
+<string name="tap_timing_value">Maximum interval: %1$d ms</string>
+<string name="tap_timing_help">150–700 ms. Lower values require faster taps. Higher values allow slower taps but may recognize unrelated touches. Default: 300 ms. Applies to both home and lock screens.</string>
+</resources>
