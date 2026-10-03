@@ -1,0 +1,1 @@
+<resources><string name="service_description">Toolbox detects home and lock screens to detect double taps with an invisible one-pixel touch observer. It reads window structure locally and does not collect or transmit screen content.</string><string name="setup_accessibility">Set up accessibility</string></resources>
